@@ -1,0 +1,73 @@
+<script setup lang="ts">
+import type { NavigationMenuItem } from '@nuxt/ui'
+
+const items = ref<NavigationMenuItem[][]>([
+    [
+        {
+            slot: 'logo',
+            label: 'Pokémon Showdown',
+            icon: 'i-lucide-pokeball',
+            to: '/',
+        }
+    ],
+  [
+    {
+      label: 'Replays',
+      icon: 'i-lucide-monitor-play',
+      to: '/replays'
+    },
+    {
+      label: 'Game by game',
+      icon: 'i-lucide-gamepad-2',
+      to: '/games'
+    },
+    {
+      label: 'Usage',
+      icon: 'i-lucide-trophy',
+      to: '/usage'
+    },
+    {
+        label: 'Matchup stats',
+        icon: 'i-lucide-bar-chart-2',
+        to: '/matchup-stats'
+    },
+    {
+        label: 'Move usage',
+        icon: 'i-lucide-chart-pie',
+        to: '/replays/matchup-stats'
+    }
+  ],
+  [
+    {
+      label: 'GitHub',
+      icon: 'i-simple-icons-github',
+      to: 'https://github.com/xJuliMendez/showdown-tracker',
+      target: '_blank'
+    },
+    {
+      label: 'Help',
+      icon: 'i-lucide-circle-help',
+      disabled: true
+    }
+  ]
+])
+</script>
+
+
+
+<template>
+    <div>
+      <UNavigationMenu orientation="horizontal"  :items :highlight="true"  class="px-20 py-8" >
+        <template #logo>
+          <div class="flex items-center">
+            <img src="/poke_ball_icon.png" alt="Pokeball" class="h-8 mr-2" />
+            <span class="text-xl font-bold">Pokémon Showdown</span>
+          </div>
+        </template>
+        <template #items="{ item }">
+          <UNavigationMenuItem :item="item" />
+        </template>
+      </UNavigationMenu>
+    <slot />
+  </div>
+</template>
