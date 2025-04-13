@@ -2,10 +2,12 @@
 </script>
 
 <template>
-  <div class="container">
-    <h1>
-      Welcome to Nuxt 3
+  <div class="flex flex-col items-center justify-center">
+    <h1 class="text-3xl font-bold text-center">
+      The complete Pokémon Showdown tracker
     </h1>
-    <p>This is a simple Nuxt 3 application.</p>
+    <div class="mt-4 text-lg text-center">
+      Your ultimate destination for tracking Pokémon battles and statistics.
+    </div>
   </div>
 </template>

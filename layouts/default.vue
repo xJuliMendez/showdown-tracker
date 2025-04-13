@@ -2,72 +2,79 @@
 import type { NavigationMenuItem } from '@nuxt/ui'
 
 const items = ref<NavigationMenuItem[][]>([
-    [
-        {
-            slot: 'logo',
-            label: 'Pokémon Showdown',
-            icon: 'i-lucide-pokeball',
-            to: '/',
-        }
-    ],
+  [
+    {
+      slot: 'logo',
+      label: 'Pokémon Showdown',
+      icon: 'i-lucide-pokeball',
+      to: '/',
+    },
+  ],
   [
     {
       label: 'Replays',
       icon: 'i-lucide-monitor-play',
-      to: '/replays'
+      to: '/replays',
     },
     {
       label: 'Game by game',
       icon: 'i-lucide-gamepad-2',
-      to: '/games'
+      to: '/',
     },
     {
       label: 'Usage',
       icon: 'i-lucide-trophy',
-      to: '/usage'
+      to: '/',
     },
     {
-        label: 'Matchup stats',
-        icon: 'i-lucide-bar-chart-2',
-        to: '/matchup-stats'
+      label: 'Matchup stats',
+      icon: 'i-lucide-bar-chart-2',
+      to: '/',
     },
     {
-        label: 'Move usage',
-        icon: 'i-lucide-chart-pie',
-        to: '/replays/matchup-stats'
-    }
+      label: 'Move usage',
+      icon: 'i-lucide-chart-pie',
+      to: '/',
+    },
   ],
   [
     {
       label: 'GitHub',
       icon: 'i-simple-icons-github',
       to: 'https://github.com/xJuliMendez/showdown-tracker',
-      target: '_blank'
+      target: '_blank',
     },
     {
       label: 'Help',
       icon: 'i-lucide-circle-help',
-      disabled: true
-    }
-  ]
+      disabled: true,
+    },
+  ],
 ])
 </script>
 
-
-
 <template>
-    <div>
-      <UNavigationMenu orientation="horizontal"  :items :highlight="true"  class="px-20 py-8" >
-        <template #logo>
-          <div class="flex items-center">
-            <img src="/poke_ball_icon.png" alt="Pokeball" class="h-8 mr-2" />
+  <div>
+    <UNavigationMenu
+      orientation="horizontal"
+      :items
+      :highlight="true"
+      class="px-20 py-8"
+    >
+      <template #logo>
+        <div class="flex items-center">
+          <img
+            src="/poke_ball_icon.png"
+            alt="Pokeball"
+            class="h-8 mr-2"
+          >
+          <div class="flex flex-col items-center">
             <span class="text-xl font-bold">Pokémon Showdown</span>
+            <span class="text-xl font-bold">Tracker</span>
           </div>
-        </template>
-        <template #items="{ item }">
-          <UNavigationMenuItem :item="item" />
-        </template>
-      </UNavigationMenu>
+        </div>
+      </template>
+    </UNavigationMenu>
     <slot />
   </div>
 </template>

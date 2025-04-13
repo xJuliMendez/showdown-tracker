@@ -1,9 +1,8 @@
 import withNuxt from './.nuxt/eslint.config.mjs'
 
-export default withNuxt(
-
-).override('nuxt/typescript', {
+export default withNuxt({
   rules: {
-    '@typescript-eslint/ban-types': 'off',
+    'no-console': 'error',
   },
-})
+},
+)
