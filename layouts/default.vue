@@ -69,8 +69,7 @@ const items = ref<NavigationMenuItem[][]>([
             class="h-8 mr-2"
           >
           <div class="flex flex-col items-center">
-            <span class="text-xl font-bold">Pokémon Showdown</span>
-            <span class="text-xl font-bold">Tracker</span>
+            <span class="text-xl font-bold">Pokémon Showdown Tracker</span>
           </div>
         </div>
       </template>

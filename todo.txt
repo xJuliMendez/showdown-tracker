@@ -1,0 +1,3 @@
+// componente para cargar las imagenes y se vea un loading
+// sacar todas las imagenes pero cachear los repetidos para no reventar la api
+// componente o funcionalidad para filtrar por el usuario clickado
