@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { TableColumn } from '@nuxt/ui'
+import TableHeaderTooltip from '~/components/Table/HeaderTooltip.vue'
 import type { UserReplay } from '~/api/replay.interface'
 import TeamPreview from '~/components/Pokemon/TeamPreview.vue'
 
@@ -9,6 +10,10 @@ const username = ref<string>(defaultUsername.value)
 const userReplays = ref<UserReplay[]>([])
 
 async function getUserReaplays(username: string = defaultUsername.value) {
+  if (username === '') {
+    return
+  }
+
   const replays = await $fetch<UserReplay[]>('https://replay.pokemonshowdown.com/search.json', {
     params: {
       username: username,
@@ -37,6 +42,13 @@ function renderRivalPokemonCell(replayId: string) {
   })
 }
 
+function renderHeader() {
+  return h(TableHeaderTooltip, {
+    text: 'Rival Pokémon',
+    tooltipText: 'Due to limited data for Regulation I, clicking a Pokémon will show information from Regulation G instead.',
+  })
+}
+
 const columns: TableColumn<UserReplay>[] = [
   {
     accessorKey: 'id',
@@ -48,14 +60,15 @@ const columns: TableColumn<UserReplay>[] = [
   },
   {
     accessorKey: 'players',
-    header: 'Oponent',
+    header: 'Rival',
     cell: ({ row }) => {
       const players: string[] = row.getValue('players')
       return getOpponentName(players, username.value)
     },
   },
   {
-    header: 'Rival Pokémon',
+    accessorKey: 'pokemon',
+    header: () => renderHeader(),
     cell: ({ row }) => renderRivalPokemonCell(row.getValue('id')),
   },
   {

@@ -3,13 +3,27 @@ import type { BattleReplay } from '~/api/replay.interface'
 import type { PokemonInfo } from '~/api/pokemon.interface'
 import { POKEMON_MAPPING_DEFINITION } from '~/api/pokemon.conts'
 
+interface PokemonSprite {
+  url: string
+  name: string
+}
+
 const props = defineProps<{
   replayId: string
   username: string
 }>()
 
+const REGULATION_G = 'gen9vgc2025regg'
+const REGULATION_I = 'gen9vgc2025regi'
+
+const regulation = props.replayId.split('-')[0]
+
+const MUNCHSTAT_REGULATION = regulation === REGULATION_I ? REGULATION_G : regulation
+
+const MUNCHSTATS_URL = `https://munchstats.com/${MUNCHSTAT_REGULATION}/0/`
+
 const loading = ref(true)
-const pokemonSprites = ref<string[]>([])
+const pokemonSprites = ref<PokemonSprite[]>([])
 
 const isPlayerVictory = ref(false)
 
@@ -72,15 +86,22 @@ async function getRivalSprites(pokemonName: string[]) {
   })
 
   const endpoints = parsedPokemon.map(pokemon => `https://pokeapi.co/api/v2/pokemon/${pokemon}`)
+  const fallbackUrl = '/poke_ball_icon.png'
 
-  const spritePromises = endpoints.map(endpoint => $fetch<PokemonInfo>(endpoint))
-  const sprites = await Promise.all(spritePromises).then(sprites => sprites.map(sprite => sprite.sprites.other?.['official-artwork'].front_default))
+  const spritePromises = endpoints.map((endpoint, index) =>
+    $fetch<PokemonInfo>(endpoint)
+      .then(sprite => ({
+        url: sprite.sprites.other?.['official-artwork'].front_default || fallbackUrl,
+        name: parsedPokemon[index],
+      }))
+      .catch(() => ({
+        url: fallbackUrl,
+        name: parsedPokemon[index],
+      })),
+  )
+  const sprites = await Promise.all(spritePromises)
 
-  if (sprites.some(sprite => sprite === undefined)) {
-    throw new Error('Error fetching sprites')
-  }
-
-  return sprites.filter(sprite => sprite !== undefined) as string[]
+  return sprites.filter(sprite => sprite.url !== undefined) as PokemonSprite[]
 }
 
 async function loadPokemonSprites() {
@@ -95,6 +116,10 @@ async function loadPokemonSprites() {
   finally {
     loading.value = false
   }
+}
+
+function openMunchstats(pokemonName: string) {
+  window.open(`${MUNCHSTATS_URL}${pokemonName}`, '_blank')
 }
 
 onMounted(() => {
@@ -132,10 +157,11 @@ watch(() => props.replayId, () => {
       <img
         v-for="(spriteUrl, index) in pokemonSprites"
         :key="index"
-        :src="spriteUrl"
+        :src="spriteUrl.url"
         alt="Rival Pokémon"
         class="w-10 h-10 hover:scale-110 hover:cursor-pointer transition-all duration-300"
         @error="pokemonSprites.splice(index, 1)"
+        @click="openMunchstats(spriteUrl.name)"
       >
     </template>
   </div>
